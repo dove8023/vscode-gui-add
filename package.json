@@ -9,7 +9,7 @@
 	"bugs": {
 		"url": "https://github.com/SpartanX1/nestjs-files/issues",
 		"email": "basak.abhijoy@gmail.com"
-	  },
+	},
 	"description": "Quickly create NestJS Files",
 	"icon": "images/icon.png",
 	"version": "0.4.0",
@@ -17,20 +17,11 @@
 		"vscode": "^1.40.0"
 	},
 	"categories": [
-		"Other", "Snippets"
+		"Other",
+		"Snippets"
 	],
 	"activationEvents": [
-		"onCommand:extension.GenerateModule",
-		"onCommand:extension.GenerateService",
-		"onCommand:extension.GenerateController",
-		"onCommand:extension.GenerateException",
-		"onCommand:extension.GenerateMiddleware",
-		"onCommand:extension.GenerateInterceptor",
-		"onCommand:extension.GeneratePipe",
-		"onCommand:extension.GenerateGuard",
-		"onCommand:extension.GenerateDecorator",
-		"onCommand:extension.GenerateExceptionFilter",
-		"onCommand:extension.GenerateUnitTest"
+		"onCommand:extension.GenerateModule"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
@@ -38,46 +29,6 @@
 			{
 				"command": "extension.GenerateModule",
 				"title": "NestJS - Generate Module"
-			},
-			{
-				"command": "extension.GenerateService",
-				"title": "NestJS - Generate Service"
-			},
-			{
-				"command": "extension.GenerateController",
-				"title": "NestJS - Generate Controller"
-			},
-			{
-				"command": "extension.GenerateException",
-				"title": "NestJS - Generate Exception"
-			},
-			{
-				"command": "extension.GenerateMiddleware",
-				"title": "NestJS - Generate Middleware"
-			},
-			{
-				"command": "extension.GenerateInterceptor",
-				"title": "NestJS - Generate Interceptor"
-			},
-			{
-				"command": "extension.GeneratePipe",
-				"title": "NestJS - Generate Pipe"
-			},
-			{
-				"command": "extension.GenerateGuard",
-				"title": "NestJS - Generate Guard"
-			},
-			{
-				"command": "extension.GenerateDecorator",
-				"title": "NestJS - Generate Decorator"
-			},
-			{
-				"command": "extension.GenerateExceptionFilter",
-				"title": "NestJS - Generate Exception Filter"
-			},
-			{
-				"command": "extension.GenerateUnitTest",
-				"title": "NestJS - Generate Unit Test"
 			}
 		],
 		"menus": {
@@ -85,56 +36,6 @@
 				{
 					"command": "extension.GenerateModule",
 					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateService",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateController",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateException",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateMiddleware",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateInterceptor",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GeneratePipe",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateGuard",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateDecorator",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateExceptionFilter",
-					"when": "explorerResourceIsFolder",
-					"group": "2_workspace"
-				},
-				{
-					"command": "extension.GenerateUnitTest",
-					"when": "!explorerResourceIsFolder",
 					"group": "2_workspace"
 				}
 			]
