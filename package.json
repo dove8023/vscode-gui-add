@@ -28,7 +28,7 @@
 		"commands": [
 			{
 				"command": "extension.GenerateModule",
-				"title": "NestJS - Generate Module"
+				"title": "GS-Template"
 			}
 		],
 		"menus": {

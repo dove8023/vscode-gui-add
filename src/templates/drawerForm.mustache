@@ -1,0 +1,183 @@
+<template>
+  <gs-drawer
+    v-model="isShowDrawer"
+    placement="right"
+    :width="368"
+    title="个人信息"
+  >
+    <gs-form
+      ref="form"
+      :rules="rules"
+      label-position="left"
+      class="form"
+      :model="userInfo"
+      label-width="100px"
+      >
+      <gs-form-item label="用户姓名" prop="name">
+        <gs-input :value="userInfo.name" disabled></gs-input>
+      </gs-form-item>
+      <gs-form-item label="角色账号" prop="nameEn">
+        <gs-input :value="userInfo.nameEn" disabled></gs-input>
+      </gs-form-item>
+      <gs-form-item label="电子邮箱" prop="email">
+        <gs-input v-model="userInfo.email" placeholder="请输入"></gs-input>
+      </gs-form-item>
+      <gs-form-item label="手机号码" prop="phone">
+        <gs-input v-model="userInfo.phone" placeholder="请输入"></gs-input>
+      </gs-form-item>
+      <gs-form-item label="登录密码">
+        <gs-button type="text-primary" @click="visible = true"
+          >修改密码</gs-button
+        >
+      </gs-form-item>
+      <gs-form-item label="上次登录时间:">
+        {{ userInfo.lastRegisterTime }}
+      </gs-form-item>
+      <gs-form-item label="上次登录IP:">
+        {{ userInfo.lastRegisterIp }}
+      </gs-form-item>
+      <gs-form-item class="button-wrap">
+        <gs-button
+          type="primary"
+          :temporarily-disabled="dataInfoVerfic"
+          @click="submitForm"
+          >确定</gs-button
+        >
+        <gs-button @click="$emit('closeDropdown')">取消</gs-button>
+      </gs-form-item>
+    </gs-form>
+  </gs-drawer>
+</template>
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+function emailVerification(v) {
+  return /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/.test(v);
+}
+function phoneErrVerification(v) {
+  return /^1[34578]\d{9}$/.test(v);
+}
+
+let confirmPass: string = "";
+@Component({
+  components: {}
+})
+export default class {{ name }} extends Vue {
+  @Prop(Object)
+  userInfo!: any;
+
+  private visible = false;
+  private passwrdData: any = {
+    oldP: "",
+    newP: "",
+    confirmP: ""
+  };
+
+  private rules: any = {
+    email: [
+      {
+        trigger: "blur",
+        required: true,
+        validator(rule, v, cb) {
+          if (emailVerification(v)) {
+            cb();
+          } else {
+            cb(new Error("请输入正确邮箱"));
+          }
+        }
+      }
+    ],
+    phone: [
+      {
+        trigger: "blur",
+        required: true,
+        validator(rule, v, cb) {
+          if (phoneErrVerification(v)) {
+            cb();
+          } else {
+            cb(new Error("请输入正确手机号"));
+          }
+        }
+      }
+    ]
+  };
+  handleNewPass(val) {
+    confirmPass = val;
+  }
+
+  private rulesP: any = {
+    confirmP: [
+      {
+        trigger: "blur",
+        validator(rule, v, cb) {
+          if (confirmPass === v) {
+            cb();
+          } else {
+            cb(new Error("两次输入密码不匹配，请重新输入"));
+          }
+        }
+      }
+    ]
+  };
+  async handleSetPasswd() {
+    const form: any = this.$refs.passform;
+    const flag = form.validate(valid => {
+      if (!valid) return;
+      this.setPasswdhandle();
+    });
+  }
+  async setPasswdhandle() {
+    const {
+      data: { code, message }
+    } = await this.$api.userApi.setUserPassword({
+      id: this.userInfo.id,
+      newPassword: this.passwrdData.newP,
+      oldPassword: this.passwrdData.oldP,
+      confirmPassword: this.passwrdData.confirmP
+    });
+    if (code === 200) {
+      this.visible = false;
+      this.$Message.success(
+        {
+          content: "密码修改成功，请重新登录",
+          onClose: () => {
+            this.$router.push("/login");
+          }
+        },
+        2
+      );
+    } else {
+      this.$Message.error(message, 2.5);
+    }
+  }
+  get dataInfoVerfic() {
+    return Object.values(this.userInfo).some(i => !i);
+  }
+  get passDataInfoVerfic() {
+    return Object.values(this.passwrdData).some(i => !i);
+  }
+  
+  async submitForm(formName) {
+    const form: any = this.$refs.form;
+    const flag = form.validate(valid => {
+      if (!valid) return;
+      alert("submit Form)
+    });
+  }
+  @Watch("visible")
+  changeVisible(val: any) {
+    if (val) {
+      this.passwrdData = {
+        oldP: "",
+        newP: "",
+        confirmP: ""
+      };
+    }
+  }
+}
+</script>
+<style lang="scss" scoped>
+.button-wrap {
+  display: flex;
+  justify-content: flex-end;
+}
+</style>

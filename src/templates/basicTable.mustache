@@ -1,0 +1,236 @@
+<template>
+  <div>
+    <div class="option-box">
+      <ul class="mb15">
+        <li class="mr15">操作类型</li>
+        <li class="mr25">
+          <gs-select v-model="selectOptions.operationType" width="180px">
+            <gs-option
+              v-for="item in optionType"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </gs-select>
+        </li>
+        <li class="mr15">操作结果</li>
+        <li class="mr25">
+          <gs-select v-model="selectOptions.operationResult" width="180px">
+            <gs-option
+              v-for="item in optionResult"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value"
+            />
+          </gs-select>
+        </li>
+        <li class="mr15">操作时间</li>
+        <li class="mr25">
+          <gs-date-picker
+            v-model="date"
+            width="208px"
+            type="date-range"
+            input-type="input"
+          />
+        </li>
+        <li class="mr15">
+          <gs-button type="primary" @click="fetch"> 查询 </gs-button>
+        </li>
+        <li class="mr15" @click="reset">
+          <gs-button>重置</gs-button>
+        </li>
+      </ul>
+    </div>
+    <gs-tables
+      class="mb20"
+      :data="list"
+      :loading-props="{ text: '加载中...' }"
+      :loading="loading"
+    >
+      <gs-tables-column prop="loginAccount" label="登录账号" fixed="left" />
+      <gs-tables-column prop="loginIp" label="登录IP" />
+      <gs-tables-column prop="opType" label="操作类型" />
+      <gs-tables-column
+        prop="operationDesc"
+        label="操作摘要"
+        :min-width="108"
+      />
+      <gs-tables-column prop="operationTime" label="操作时间" width="160" />
+      <gs-tables-column
+        prop="operationResult"
+        label="操作结果"
+        width="108"
+        fixed="right"
+      >
+        <template slot-scope="scope"> 成功 </template>
+      </gs-tables-column>
+    </gs-tables>
+    <div>
+      <gs-pagination
+        :current="page.current"
+        :total="page.total"
+        layout="pagesizes,pager,jumper,jumpbtn"
+        @page-change="pageChange"
+        @page-size-change="pageSizeChange"
+      />
+    </div>
+  </div>
+</template>
+
+<script lang="ts">
+import { Component, Prop, Vue, Watch } from "vue-property-decorator";
+
+@Component({
+  components: {},
+})
+export default class {{ name }} extends Vue {
+  loading = false;
+
+  list: any[] = [
+    {
+      "id": 270001,
+      "operationTime": "2020-12-30T07:38:36.045+0000",
+      "loginAccount": "my",
+      "loginIp": "10.202.229.210",
+      "operationType": 5,
+      "operationDesc": "审计管理分页查询",
+      "operationResult": true
+    },
+    {
+      "id": 269951,
+      "operationTime": "2020-12-30T07:38:30.565+0000",
+      "loginAccount": "my",
+      "loginIp": "10.202.229.210",
+      "operationType": 5,
+      "operationDesc": "系统首页获取个人信息",
+      "operationResult": true
+    },
+    {
+      "id": 269651,
+      "operationTime": "2020-12-30T07:38:30.455+0000",
+      "loginAccount": "my",
+      "loginIp": "10.202.229.210",
+      "operationType": 5,
+      "operationDesc": "系统首页应用告警分析",
+      "operationResult": true
+    },
+    {
+      "id": 269601,
+      "operationTime": "2020-12-30T07:38:30.454+0000",
+      "loginAccount": "my",
+      "loginIp": "10.202.229.210",
+      "operationType": 5,
+      "operationDesc": "系统首页磁盘容量预测",
+      "operationResult": true
+    }
+  ];
+
+  page = {
+    current: 1,
+    total: 0,
+    size: 15,
+  };
+
+  date = null;
+
+  selectOptions = {
+    operationType: undefined,
+    operationResult: undefined,
+    operationStartTime: undefined,
+    operationEndTime: undefined,
+  };
+
+  @Watch("date", { immediate: true, deep: true })
+  ondate(val, oldVal) {
+    if (!val) {
+      return;
+    }
+
+    this.selectOptions.operationStartTime = val[0].format(
+      "YYYY-MM-DD HH:mm:ss"
+    );
+    this.selectOptions.operationEndTime = val[1]
+      .endOf("day")
+      .format("YYYY-MM-DD HH:mm:ss");
+  }
+
+  optionType = [
+    {
+      value: 1,
+      label: "登录",
+    },
+    {
+      value: 2,
+      label: "登出",
+    },
+    {
+      value: 3,
+      label: "新增",
+    }
+  ];
+
+  // 操作结果
+  optionResult = [
+    {
+      value: true,
+      label: "成功",
+    },
+    {
+      value: false,
+      label: "失败",
+    },
+  ];
+
+  reset() {
+    this.selectOptions = {
+      operationType: undefined,
+      operationResult: undefined,
+      operationStartTime: undefined,
+      operationEndTime: undefined,
+    };
+    this.date = null;
+    this.fetch();
+  }
+
+  created() {
+    this.fetch();
+  }
+
+  pageChange(p) {
+    this.page.current = p;
+    this.fetch();
+  }
+
+  pageSizeChange(size) {
+    this.page.size = size;
+    this.page.current = 1;
+    this.fetch();
+  }
+
+  async fetch() {
+    let { page, selectOptions } = this;
+    alert("fetch API.")
+  }
+}
+</script>
+<style lang="scss" scoped>
+.mb15{
+  margin-bottom: 15px;
+}
+.mr15{
+  margin-right: 15px;
+}
+.mr25{
+  margin-right: 25px;
+}
+.option-box ul {
+  overflow: hidden;
+  padding: 5px 0;
+}
+
+.option-box li {
+  float: left;
+  line-height: 28px;
+  height: 28px;
+}
+</style>
