@@ -4,35 +4,45 @@ import { invalidFileNames } from './utils';
 
 export function activate(context: ExtensionContext) {
 
-	let disposableModuleCommand = commands.registerCommand('extension.GenerateModule', (resource: Uri) => {
+	let disposableModuleCommand = commands.registerCommand('extension.createTemplate', async (resource: Uri) => {
 
 		if (workspace === undefined) {
 			return window.showErrorMessage('Please select a workspace first');
 		}
 
+		let selectTemplate = await window.showQuickPick(["basicTable2", "drawerForm"])
+		console.log(selectTemplate, resource)
 
-		window.showInputBox({
-			placeHolder: "Please enter component name",
-		})
-			.then<any>((input) => {
+		if (!selectTemplate) {
+			return;
+		}
+
+		return createFile({
+			name: selectTemplate,
+			uri: resource,
+			fullName: selectTemplate.toLowerCase() + `.vue`
+		});
+
+		// window.showInputBox({
+		// 	placeHolder: "Please enter component name",
+		// })
+		// 	.then<any>((input) => {
 
 
-				let s = window.showQuickPick(["a", "b", "c"])
-				console.log(s)
 
-				if (input === undefined) { return; }
+		// 		if (input === undefined) { return; }
 
 
-				if (invalidFileNames.test(input)) {
-					return window.showErrorMessage('Invalid filename');
-				}
-				console.log('resource: ', resource)
-				return createFile({
-					name: input,
-					uri: resource,
-					fullName: input.toLowerCase() + `.vue`
-				});
-			});
+		// 	if (invalidFileNames.test(input)) {
+		// 		return window.showErrorMessage('Invalid filename');
+		// 	}
+		// 	console.log('resource: ', resource)
+		// 	return createFile({
+		// 		name: input,
+		// 		uri: resource,
+		// 		fullName: input.toLowerCase() + `.vue`
+		// 	});
+		// });
 	});
 
 

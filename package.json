@@ -21,20 +21,20 @@
 		"Snippets"
 	],
 	"activationEvents": [
-		"onCommand:extension.GenerateModule"
+		"onCommand:extension.createTemplate"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
 		"commands": [
 			{
-				"command": "extension.GenerateModule",
+				"command": "extension.createTemplate",
 				"title": "GS-Template"
 			}
 		],
 		"menus": {
 			"explorer/context": [
 				{
-					"command": "extension.GenerateModule",
+					"command": "extension.createTemplate",
 					"when": "explorerResourceIsFolder",
 					"group": "2_workspace"
 				}

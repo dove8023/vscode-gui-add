@@ -13,7 +13,7 @@ interface ComponentFile {
 export async function createFile(file: ComponentFile) {
 
     if (fs.existsSync(join(file.uri.fsPath, file.name.toLowerCase() + `.vue`))) {
-        return window.showErrorMessage('A file already exists with given name');
+        return window.showErrorMessage('A file already exists with the same name.');
     }
 
     const stats = await workspace.fs.stat(file.uri);
@@ -31,7 +31,9 @@ export async function createFile(file: ComponentFile) {
         .then(() => {
             return true;
         })
-        .catch(err => { return window.showErrorMessage(err); });
+        .catch(err => {
+            return window.showErrorMessage('错误：模板未找到');
+        });
 }
 
 
